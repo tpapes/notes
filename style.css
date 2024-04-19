@@ -1,0 +1,26 @@
+body{
+    font-family:'Arvo', sans-serif;
+    background-color: rgb(0, 0, 0);
+    color: pink;
+}
+
+h1, h2, h3{
+    color: hotpink;
+}
+
+a:link{
+    color:rgb(91, 157, 255);
+}
+
+a:visited{
+    color:rgb(109, 69, 255);
+}
+
+a:hover, a:focus, a:active{
+    background-color: white;
+    color:black;
+}
+
+.page{
+    border: 10px ridge purple
+}

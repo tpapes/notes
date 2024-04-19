@@ -1,9 +1,51 @@
-<!DOCTYPE HTML>
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <h1>hey.</h1>
-  </body>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>hey.</title>
+        <link rel="stylesheet" href="style.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Arvo:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    </head>
+
+    <body>
+        <section class="page" id="landing">
+            <!--intro-->
+            <div id="intro">
+                <h1 class="text">hey.</h1>
+                <h2 class="text">i made a website.</h2>
+                <h3 class="text">it's for notes i made on like... hopefully a lot of cool things.</h3>
+
+                <p class="text">(i haven't written very much yet) <br> 
+                    <br>
+                    i hope it looks good by the time you're here 👍
+                </p>
+
+                <p>
+                    There's no real starting point here. I'm trying to make my notes
+                    as interconnected as possible, following the principles of 
+                    <a target="_blank" class = "external" href="https://notes.andymatuschak.org/z5E5QawiXCMbtNtupvxeoEX">
+                        Evergreen Notes</a>, so everything should mesh together eventually. Hopefully one of these serves as an 
+                    interesting starting point for you:
+                </p>
+            </div>
+
+            <!--starting points-->
+            <div id="starting-points">
+                <ul>
+                    <li>What started me on this journey: 
+                        <a href="Dead Internet Theory.html" class="internal live" data-page-num="1">Dead Internet Theory</a></li>
+                    <li>test:
+                        <a href="blank.html" class="internal live" data-page-num="1">test</a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+    </body>
+
+    <script src="main.js"></script>
+    <script>
+        connectInternalLinks(true)
+    </script>
 </html>
