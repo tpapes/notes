@@ -1,50 +1,9 @@
 var pageCount = 1;
 var pages = [document.getElementsByClassName("page")[0]];
 var iRuleCount;
-var tilt = window;
-var animProperty = "width"
-window.matchMedia("(orientation: portrait)").addEventListener("change", ondeviceorientation)
-
-var ondeviceorientation = function(w, e) {
-    var sheet = document.styleSheets[0]
-    if (window.matchMedia("(orientation: portrait)").matches){
-        sheet.deleteRule(6)
-        sheet.insertRule(`
-            .page.loaded{
-                display: grid;
-                flex: 1;
-                border: .5rem double purple;
-                box-sizing: border-box;
-                vertical-align: top;
-                padding: .5rem;
-                height: 99%;
-                overflow: auto;
-            }
-        `)
-        animProperty = "height";
-
-    }else if (window.matchMedia("(orientation: landscpae)").matches){
-        sheet.deleteRule(6)
-        sheet.insertRule(`
-            .page.loaded{
-                display: inline-block;
-                flex: 1;
-                border: .5rem double purple;
-                box-sizing: border-box;
-                vertical-align: top;
-                padding: .5rem;
-                height: 99%;
-                overflow: auto;
-            }
-        `)
-
-        animProperty = "width";
-    };
-};
 
 //handles internal link logic
 var onInternalLinkPressed = function(e){
-    console.log(window)
     var link = e.srcElement;
     var pageNum = link.dataset.pageNum;
 
@@ -169,7 +128,6 @@ var onAnimEnd = function(e){
     if (document.styleSheets[0][iRuleCount]){
         document.styleSheets[0].deleteRule(iRuleCount);
     };
-    console.log(e.target);
     e.target.style.animation = "";
     e.target.removeEventListener("animationend", onAnimEnd);
     if (e.target.classList.contains("closing")){
@@ -182,7 +140,6 @@ var onAnimEnd = function(e){
 
 var openNewPage = function(){
     var newPage = pages[pageCount - 1];
-    console.log(newPage);
     animatePages("open", newPage);
     var container = document.getElementById("container");
     container.appendChild(newPage.section);

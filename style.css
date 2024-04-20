@@ -5,13 +5,26 @@ body{
     color: pink;
 }
 
-#container{
-    display: flex;
-    box-sizing: content-box;
-    height: 100%;
-    position: fixed;
-    overflow-x: scroll;
-    overflow-y: scroll;
+@media screen and (orientation: portrait) {
+    #container{
+        display: grid;
+        box-sizing: content-box;
+        height: 100%;
+        position: fixed;
+        overflow-x: clip;
+        overflow-y: scroll;
+    }
+}
+@media screen and (orientation: landscape) {
+    #container{
+        display: flex;
+        box-sizing: content-box;
+        height: 100%;
+        position: fixed;
+        overflow-x: scroll;
+        overflow-y: scroll;
+    }
+    
 }
 
 h1, h2, h3{
