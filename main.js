@@ -1,9 +1,16 @@
 var pageCount = 1;
 var pages = [document.getElementsByClassName("page")[0]];
 var iRuleCount;
+var tilt = window;
+window.matchMedia("(orientation: portrait)").addEventListener("change", ondeviceorientation)
+
+var ondeviceorientation = function(w, e) {
+    console.log(e);
+};
 
 //handles internal link logic
 var onInternalLinkPressed = function(e){
+    console.log(window)
     var link = e.srcElement;
     var pageNum = link.dataset.pageNum;
 
