@@ -62,7 +62,7 @@ var loadNewPage = function(link){
     
     //create a page object with the information we have
     var newId = "page-" + (pages.length + 1);
-    var page = new Page(newSection, pages.length + 1, newId);
+    var page = new Page(newSection, pages.length + 1, newId, newTitle);
     return page
 };
 
@@ -71,7 +71,7 @@ var addAnimationToTarget = function(action, element){
     if (action === "close"){animTime = ".1s"}else{animTime = ".25s"}
     element.style.animation = animTime + " ease-out 1 normal " + action;
     element.style.position = "relative"
-    element.addEventListener("animationend", resizePages);
+    element.addEventListener("animationend", onAnimEnd);
 };
 
 //animate newly opened/closed pages.
@@ -122,20 +122,21 @@ var animatePages = function(action, page){
     document.styleSheets[0].cssRules = ruleSheet.cssRules;
 };
 
-//resizes open pages
-var resizePages = function(e){
+//updates pages to reflect changes made by animation
+//e.g. closes closed pages and sets width of open ones
+var onAnimEnd = function(e){
     if (document.styleSheets[0][iRuleCount]){
         document.styleSheets[0].deleteRule(iRuleCount);
     };
     console.log(e.target);
     e.target.style.animation = "";
-    e.target.removeEventListener("animationend", resizePages);
+    e.target.removeEventListener("animationend", onAnimEnd);
     if (e.target.classList.contains("closing")){
         e.target.remove();
     };
     e.target.style.animation = "";
     e.target.style.flex = "1";
-    e.target.removeEventListener("animationend", resizePages);
+    e.target.removeEventListener("animationend", onAnimEnd);
 };
 
 var openNewPage = function(){
