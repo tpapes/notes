@@ -4,6 +4,15 @@ body{
     color: pink;
 }
 
+#container{
+    display: flex;
+    box-sizing: border-box;
+    height: 100%;
+    position: fixed;
+    overflow-x: scroll;
+    overflow-y: clip;
+}
+
 h1, h2, h3{
     color: hotpink;
 }
@@ -21,6 +30,13 @@ a:hover, a:focus, a:active{
     color:black;
 }
 
-.page{
-    border: 10px ridge purple
+.page.loaded{
+    display: inline-block;
+    flex: 1;
+    border: .7rem ridge purple;
+    box-sizing: border-box;
+    vertical-align: top;
+    padding: .5rem;
+    height: 100%;
+    overflow: auto;
 }
