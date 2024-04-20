@@ -7,20 +7,19 @@ var onInternalLinkPressed = function(e){
     var link = e.srcElement;
     var pageNum = link.dataset.pageNum;
 
+    //backtrack if link is on a prev page
     if (parseInt(pageNum) < pageCount){
 
         backTrack(parseInt(pageNum));
         reviveLinks(pageNum);
-        var page = loadNewPage(link);
-        animatePages(page);
-        openNewPage();
+    
+    }; 
 
-    } else{
-        var page = loadNewPage(link);
-        animatePages(page);
-        openNewPage();
+    //open new page
+    var page = loadNewPage(link);
+    updatePageCount(page);
+    openNewPage();
         
-    };
 
 };
 
@@ -67,49 +66,84 @@ var loadNewPage = function(link){
     return page
 };
 
-//animates open pages
-var animatePages = function(page){
+var addAnimationToTarget = function(action, element){
+    var animTime;
+    if (action === "close"){animTime = ".1s"}else{animTime = ".25s"}
+    element.style.animation = animTime + " ease-out 1 normal " + action;
+    element.style.position = "relative"
+    element.addEventListener("animationend", resizePages);
+};
 
-    var newSection = page.section;
+//animate newly opened/closed pages.
+var animatePages = function(action, page){
+    //load CSS rules
     var ruleSheet = document.styleSheets[0]
     var rules = ruleSheet.cssRules;
     iRuleCount = rules.length
 
-    ruleSheet.insertRule(`
-        @keyframes shrink{
-            from{
-                flex: 0 0 0;
+    if (action === "open"){
+        page.type = "Page"
+        var newSection = page.section;
+
+        ruleSheet.insertRule(`
+            @keyframes open{
+                from{
+                    flex: 0 0 0;
+                }
+                to{
+                    flex: 0 0 ` + 100/(pageCount) + `%; 
+                }
             }
-            to{
-                flex: 0 0 ` + 100/(pageCount + 1) + `%; 
+        `, iRuleCount);
+
+        newSection.classList.add("loaded", "page");
+
+        addAnimationToTarget(action, newSection);
+
+    } else if (action === "close") {
+        page.type = "Array/Page";
+        ruleSheet.insertRule(`
+            @keyframes close{
+                from{
+                    flex: 0 0 ` + 100/(pageCount + page.length + 1) + `%; 
+                }
+                to{
+                    flex: 0 0 0; 
+                }
             }
-        }
-    `, iRuleCount);
+        `, iRuleCount);
+
+        page.forEach(function(target){
+            addAnimationToTarget("close", target.section);
+        });
+
+    };
 
     document.styleSheets[0].cssRules = ruleSheet.cssRules;
-
-    updatePageCount(newSection);
-
-    newSection.style.animation = ".25s ease-out 1 normal shrink";
-    newSection.style.position = "relative"
-    newSection.classList.add("loaded", "page");
-
-    newSection.addEventListener("animationend", resizePages);
 };
 
 //resizes open pages
 var resizePages = function(e){
-    document.styleSheets[0].deleteRule(iRuleCount);
+    if (document.styleSheets[0][iRuleCount]){
+        document.styleSheets[0].deleteRule(iRuleCount);
+    };
     console.log(e.target);
     e.target.style.animation = "";
-    e.target.style.flex = "1"
+    e.target.removeEventListener("animationend", resizePages);
+    if (e.target.classList.contains("closing")){
+        e.target.remove();
+    };
+    e.target.style.animation = "";
+    e.target.style.flex = "1";
     e.target.removeEventListener("animationend", resizePages);
 };
 
 var openNewPage = function(){
     var newPage = pages[pageCount - 1];
+    console.log(newPage);
+    animatePages("open", newPage);
     var container = document.getElementById("container");
-    container.appendChild(newPage);
+    container.appendChild(newPage.section);
 };
 
 //sets site title
@@ -159,9 +193,13 @@ var reviveLinks = function(pageNum){
 
 //deletes latest page until pageCount = pageNum
 var backTrack = function(pageNum){
+    var removedPages = [];
     while(pageCount > pageNum){
         lastPage = pages.pop();
-        lastPage.remove();
+        lastPage.section.classList.add("closing");
+        removedPages.push(lastPage);
         updatePageCount();
     };
+
+    animatePages("close", removedPages);
 };
