@@ -10,9 +10,21 @@ body{
         display: grid;
         box-sizing: content-box;
         height: 100%;
+        width: 100%;
         position: fixed;
         overflow-x: clip;
         overflow-y: scroll;
+    }
+    .page.loaded{
+        display: block;
+        border: .5rem double purple;
+        box-sizing: border-box;
+        padding: .5rem;
+        text-wrap: pretty;
+        width: 96%;
+        columns: 10em 2;
+        overflow-y: clip;
+        overflow-x: scroll;
     }
 }
 @media screen and (orientation: landscape) {
@@ -25,6 +37,16 @@ body{
         overflow-y: scroll;
     }
     
+    .page.loaded{
+        display: inline-block;
+        flex: 1;
+        border: .5rem double purple;
+        box-sizing: border-box;
+        vertical-align: top;
+        padding: .5rem;
+        height: 99%;
+        overflow: auto;
+    }
 }
 
 h1, h2, h3{
@@ -44,13 +66,3 @@ a:hover, a:focus, a:active{
     color:black;
 }
 
-.page.loaded{
-    display: inline-block;
-    flex: 1;
-    border: .5rem double purple;
-    box-sizing: border-box;
-    vertical-align: top;
-    padding: .5rem;
-    height: 99%;
-    overflow: auto;
-}
