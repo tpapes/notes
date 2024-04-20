@@ -2,6 +2,7 @@ var pageCount = 1;
 var pages = [document.getElementsByClassName("page")[0]];
 var iRuleCount;
 var tilt = window;
+var animProperty = "width"
 window.matchMedia("(orientation: portrait)").addEventListener("change", ondeviceorientation)
 
 var ondeviceorientation = function(w, e) {
@@ -10,7 +11,7 @@ var ondeviceorientation = function(w, e) {
         sheet.deleteRule(6)
         sheet.insertRule(`
             .page.loaded{
-                display: block;
+                display: grid;
                 flex: 1;
                 border: .5rem double purple;
                 box-sizing: border-box;
@@ -20,6 +21,7 @@ var ondeviceorientation = function(w, e) {
                 overflow: auto;
             }
         `)
+        animProperty = "height";
 
     }else if (window.matchMedia("(orientation: landscpae)").matches){
         sheet.deleteRule(6)
@@ -35,6 +37,8 @@ var ondeviceorientation = function(w, e) {
                 overflow: auto;
             }
         `)
+
+        animProperty = "width";
     };
 };
 
