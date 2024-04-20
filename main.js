@@ -5,7 +5,37 @@ var tilt = window;
 window.matchMedia("(orientation: portrait)").addEventListener("change", ondeviceorientation)
 
 var ondeviceorientation = function(w, e) {
-    console.log(e);
+    var sheet = document.styleSheets[0]
+    if (window.matchMedia("(orientation: portrait)").matches){
+        sheet.deleteRule(6)
+        sheet.insertRule(`
+            .page.loaded{
+                display: block;
+                flex: 1;
+                border: .5rem double purple;
+                box-sizing: border-box;
+                vertical-align: top;
+                padding: .5rem;
+                height: 99%;
+                overflow: auto;
+            }
+        `)
+
+    }else if (window.matchMedia("(orientation: landscpae)").matches){
+        sheet.deleteRule(6)
+        sheet.insertRule(`
+            .page.loaded{
+                display: inline-block;
+                flex: 1;
+                border: .5rem double purple;
+                box-sizing: border-box;
+                vertical-align: top;
+                padding: .5rem;
+                height: 99%;
+                overflow: auto;
+            }
+        `)
+    };
 };
 
 //handles internal link logic
