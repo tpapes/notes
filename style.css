@@ -11,7 +11,7 @@ body{
     height: 100%;
     position: fixed;
     overflow-x: scroll;
-    overflow-y: clip;
+    overflow-y: scroll;
 }
 
 h1, h2, h3{
