@@ -2,10 +2,17 @@ var pageCount = 1;
 var pages = [document.getElementsByClassName("page")[0]];
 var iRuleCount;
 
+document.body.innerHTML += "<p id=\"scroll-message\" style=\"text-align:center;\">(scroll horizontally)</p>";
+
 //handles internal link logic
 const onInternalLinkPressed = function(e){
     var link = e.srcElement;
     var pageNum = link.dataset.pageNum;
+
+    var scrollMessage = document.getElementById("scroll-message");
+    if (scrollMessage != undefined){
+        scrollMessage.remove()
+    };
 
     //backtrack if link is on a prev page
     if (parseInt(pageNum) < pageCount){
