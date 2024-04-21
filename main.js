@@ -3,7 +3,7 @@ var pages = [document.getElementsByClassName("page")[0]];
 var iRuleCount;
 
 //handles internal link logic
-var onInternalLinkPressed = function(e){
+const onInternalLinkPressed = function(e){
     var link = e.srcElement;
     var pageNum = link.dataset.pageNum;
 
@@ -12,19 +12,27 @@ var onInternalLinkPressed = function(e){
 
         backTrack(parseInt(pageNum));
         reviveLinks(pageNum);
+        var listener = function(){
+            //open new page
+            var page = loadNewPage(link);
+            updatePageCount(page);
+            openNewPage();
+            this.removeEventListener("closed", listener);
+        };
+        this.addEventListener("closed", listener)
     
-    }; 
-
-    //open new page
-    var page = loadNewPage(link);
-    updatePageCount(page);
-    openNewPage();
+    }else{
+        //open new page
+        var page = loadNewPage(link);
+        updatePageCount(page);
+        openNewPage();
+    };
         
 
 };
 
 //creates and returns Page object made from linked HTML 
-var loadNewPage = function(link){
+const loadNewPage = function(link){
 //new section for the page to be shown in
     var newSection = document.createElement("section");
 
@@ -66,16 +74,16 @@ var loadNewPage = function(link){
     return page
 };
 
-var addAnimationToTarget = function(action, element){
+const addAnimationToTarget = function(action, element){
     var animTime;
     if (action === "close"){animTime = ".1s"}else{animTime = ".25s"}
-    element.style.animation = animTime + " ease-out 1 normal " + action;
+    element.style.animation = animTime + " ease 1 normal " + action;
     element.style.position = "relative"
     element.addEventListener("animationend", onAnimEnd);
 };
 
 //animate newly opened/closed pages.
-var animatePages = function(action, page){
+const animatePages = (action, page) => {
     //load CSS rules
     var ruleSheet = document.styleSheets[0]
     var rules = ruleSheet.cssRules;
@@ -88,10 +96,10 @@ var animatePages = function(action, page){
         ruleSheet.insertRule(`
             @keyframes open{
                 from{
-                    flex: 0 0 0;
+                    top: 100vh;
                 }
                 to{
-                    flex: 0 0 ` + 100/(pageCount) + `%; 
+                    top: 0vh; 
                 }
             }
         `, iRuleCount);
@@ -105,10 +113,10 @@ var animatePages = function(action, page){
         ruleSheet.insertRule(`
             @keyframes close{
                 from{
-                    flex: 0 0 ` + 100/(pageCount + page.length + 1) + `%; 
+                    left: 0vw; 
                 }
                 to{
-                    flex: 0 0 0; 
+                    left: 100vw; 
                 }
             }
         `, iRuleCount);
@@ -124,7 +132,7 @@ var animatePages = function(action, page){
 
 //updates pages to reflect changes made by animation
 //e.g. closes closed pages and sets width of open ones
-var onAnimEnd = function(e){
+const onAnimEnd = function(e){
     if (document.styleSheets[0][iRuleCount]){
         document.styleSheets[0].deleteRule(iRuleCount);
     };
@@ -132,13 +140,16 @@ var onAnimEnd = function(e){
     e.target.removeEventListener("animationend", onAnimEnd);
     if (e.target.classList.contains("closing")){
         e.target.remove();
+        var event = new Event("closed");
+        dispatchEvent(event);
+        
     };
     e.target.style.animation = "";
     e.target.style.flex = "1";
     e.target.removeEventListener("animationend", onAnimEnd);
 };
 
-var openNewPage = function(){
+const openNewPage = function(){
     var newPage = pages[pageCount - 1];
     animatePages("open", newPage);
     var container = document.getElementById("container");
@@ -146,12 +157,12 @@ var openNewPage = function(){
 };
 
 //sets site title
-var setTitle = function(newTitle){
+const setTitle = function(newTitle){
     document.title = newTitle;
 }
 
 //updates the PageCount var to match pages.length
-var updatePageCount = function(newSection) {
+const updatePageCount = function(newSection) {
    if (newSection){ 
         pageCount = pages.push(newSection);
    }else{
@@ -160,12 +171,12 @@ var updatePageCount = function(newSection) {
 };
 
 //assigns a page/section number to a link, based on curr pageCount
-var updateLinkPageNum = function(link) {
+const updateLinkPageNum = function(link) {
     link.dataset.pageNum = pageCount;
 };
 
 //connect internal links in doc to onInternalLinkPressed() 
-var connectInternalLinks = function(liveOnly) {
+const connectInternalLinks = function(liveOnly) {
     document.addEventListener("click", function(e){
         if(e.target.matches("a.internal.live")) {
             e.preventDefault();
@@ -177,12 +188,12 @@ var connectInternalLinks = function(liveOnly) {
 };
 
 //kills link
-var killLink = function(link) {
+const killLink = function(link) {
     link.classList.remove("live");
 };
 
 //reviveLinks
-var reviveLinks = function(pageNum){
+const reviveLinks = function(pageNum){
     document.querySelectorAll("a[data-page-num=\"" + pageNum + "\"").forEach(
         function(link){
             link.classList.add("live");
@@ -191,7 +202,7 @@ var reviveLinks = function(pageNum){
 };
 
 //deletes latest page until pageCount = pageNum
-var backTrack = function(pageNum){
+const backTrack = function(pageNum){
     var removedPages = [];
     while(pageCount > pageNum){
         lastPage = pages.pop();
