@@ -2,17 +2,18 @@ var pageCount = 1;
 var pages = [document.getElementsByClassName("page")[0]];
 var iRuleCount;
 
-document.body.innerHTML += "<p id=\"scroll-message\" style=\"text-align:center;\">(scroll horizontally)</p>";
+document.body.innerHTML += "<b><i><p id=\"scroll-message\" style=\"text-align:center;\">(scroll horizontally)</p></i></b>";
+document.getElementById("content").addEventListener("scroll", scrollListener = (e)=>{
+    var scrollMessage = document.getElementById("scroll-message");
+    scrollMessage.remove();
+    document.getElementById("content").removeEventListener("scroll", scrollListener);
+    
+});
 
 //handles internal link logic
 const onInternalLinkPressed = function(e){
     var link = e.srcElement;
     var pageNum = link.dataset.pageNum;
-
-    var scrollMessage = document.getElementById("scroll-message");
-    if (scrollMessage != undefined){
-        scrollMessage.remove()
-    };
 
     //backtrack if link is on a prev page
     if (parseInt(pageNum) < pageCount){
@@ -183,7 +184,12 @@ const updateLinkPageNum = function(link) {
 };
 
 //connect internal links in doc to onInternalLinkPressed() 
-const connectInternalLinks = function(liveOnly) {
+const connectInternalLinks = function() {
+    var links = document.querySelectorAll("a.internal.live")
+    links.forEach((link) =>{
+        link.dataset.pageNum = "1";
+    });
+
     document.addEventListener("click", function(e){
         if(e.target.matches("a.internal.live")) {
             e.preventDefault();
