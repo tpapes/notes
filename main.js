@@ -12,7 +12,7 @@ document.getElementById("content").addEventListener("scroll", scrollListener = (
 
 //handles internal link logic
 const onInternalLinkPressed = function(e){
-    var link = e.srcElement;
+    var link = e.data;
     var pageNum = link.dataset.pageNum;
 
     //backtrack if link is on a prev page
@@ -84,7 +84,7 @@ const loadNewPage = function(link){
 
 const addAnimationToTarget = function(action, element){
     var animTime;
-    if (action === "close"){animTime = ".1s"}else{animTime = ".25s"}
+    if (action === "close"){animTime = ".15s"}else{animTime = ".25s"}
     element.style.animation = animTime + " ease 1 normal " + action;
     element.style.position = "relative"
     element.addEventListener("animationend", onAnimEnd);
@@ -193,8 +193,15 @@ const connectInternalLinks = function() {
     document.addEventListener("click", function(e){
         if(e.target.matches("a.internal.live")) {
             e.preventDefault();
+            e.data = e.target;
             onInternalLinkPressed(e);
-        } else if(e.target.matches("a.internal")){
+        } else if (e.target.matches("a.internal.live i") | e.target.matches("a.internal.live b")){
+            e.preventDefault();
+            var parEl = e.target.parentElement;
+            e.data = parEl;
+            onInternalLinkPressed(e);
+            
+        }else if(e.target.matches("a.internal") | e.target.parentElement.matches("a.internal")){
             e.preventDefault();
         };
     });
