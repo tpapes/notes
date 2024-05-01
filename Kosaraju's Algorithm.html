@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Kosaraju's Algorithm</title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="utf-8">
+
+        <link rel="stylesheet" href="style.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Arvo:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+        
+    </head>
+    <body>
+        <div id="container">
+            <section id="content", class="page loaded">
+                <h1>Kosaraju's Algorithm</h1>
+                <p>
+                    Kosaraju's Algorithm finds the strongly connected components 
+                    in a directed graph. 
+                </p>
+                <h2>
+                    The Algorithm:
+                </h2>
+                <ol>
+                    <li>
+                        let L be an empty stack.
+                    </li>
+                    <li>
+                        for each vertex u in the graph, if u is not visited, 
+                        do Visit(u), where Visit(u) is described as follows:
+                        <ul>
+                            <li>
+                                mark u as visited
+                            </li>
+                            <li>
+                                for each vertex v at an outbound edge of u, 
+                                if v is not visited, do Visit(v)
+                            </li>
+                            <li>
+                                prepend u to L
+                            </li>
+                        </ul>
+
+                        At this point, we will have recursively prepended each vertex to L 
+                        in post-order, meaning that no vertex can have an edge 
+                        pointing to a vertex to its left. 
+                    </li>
+
+                    <li>
+                        for each vertex u in L, if u is not connected, 
+                        do Connect(u, u), where Connect(u, root) is described as follows:
+                        <ul>
+                            <li>
+                                mark u as connected
+                            </li>
+                            <li>
+                                set the representative node of the component to root
+                            </li>
+                            <li>
+                                for each vertex v at an <i>inbound</i> edge of u,
+                                if v is not connected, do Connect(v, root)
+                            </li>
+                        </ul>
+
+                        At this point, all vertices will have a representative root, where
+                        all vertices in the same component share the same root.
+                    </li>
+                </ol>
+                <p>
+                    This algorithm, in essence,  searches for groups of vertices that are connected 
+                    both forwards and backwards, and gives them the same representative.
+
+                    It does this in a somewhat roundabout way though. 
+                </p>
+            </section>
+        </div>
+    </body>
+    <script src="classes.js"></script>
+    <script src="main.js"></script>
+    <script>
+        connectInternalLinks(true)
+    </script>
+</html>
