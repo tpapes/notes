@@ -38,6 +38,33 @@ html, body{
         overflow-x: clip;
         overflow-y: scroll;
     }
+    img{
+        flex: 1;
+        height: calc(100vh/3.2 - 2.3rem);
+        border: .25rem double rgb(38, 38, 38);
+    }
+    .page.loaded.board{
+        display: block;
+        flex: 0;
+        width: 96vw;
+        height: 96vh;
+        columns: 0rem 0;
+        box-sizing: border-box;
+    }
+    section.board{
+        display:flex;
+        width:fit-content;
+        height: fit-content;
+        img{
+            display: inline-block;
+            box-sizing:border-box;
+            flex: 1;
+            width: auto;
+            height: auto;
+            max-height: 90vh;
+
+        }
+    }
 }
 @media screen and (orientation: landscape) {
     #container{
@@ -51,7 +78,7 @@ html, body{
     
     .page.loaded{
         display: inline-block;
-        flex: 1;
+        flex: none;
         border: .5rem double purple;
         box-sizing: border-box;
         vertical-align: top;
@@ -67,7 +94,33 @@ html, body{
         overflow-y: clip;
         overflow-x: scroll;
     }
+    img{
+        flex: 1;
+        width: calc(100vw/3.2 - 2.3rem);
+        align-content: center;
+        border: .25rem dotted purple;
+    }
+    .page.loaded.board{
+        display: inline-block;
+        flex: 0 0 auto;
+        width: 96vw;
+        height: 98vh;
+        box-sizing: border-box;
+    }
+    section.board{
+        display: block;
+        img{
+            display: flexbox;
+            flex: auto;
+            width: auto;
+            height: auto;
+            max-width: 96vw;
+            max-height: 98vh;
+        }
+    }
 }
+
+
 
 h1, h2, h3{
     color: hotpink;
@@ -108,7 +161,7 @@ figure.quote figcaption a.external{
 
 a {
     text-decoration: none;
-    border-radius: 3px;
+    border-radius: .25rem;
     border-width: .1rem;
     break-inside: auto;
 }

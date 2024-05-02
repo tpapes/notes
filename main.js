@@ -47,9 +47,11 @@ const loadNewPage = function(link){
     //kill the link so user cant spawn duplicate pages
     killLink(link);
 
-    //store page url as newPage
+    //store page URL as newPageHref
     var newPageHref = link.getAttribute("href");
+
     var newTitle;
+    var classes = [];
 
     //use url to get info from newPage's html file
     fetch(newPageHref)
@@ -66,7 +68,13 @@ const loadNewPage = function(link){
             const contentEl = doc.getElementById("content")
             newSection.innerHTML = contentEl.innerHTML;
 
-            //update title with title from new page
+            //update classes with classes from new page
+            classes = contentEl.classList;
+            classEvent = new Event("classes loaded");
+            classEvent.data = classes;
+            newSection.dispatchEvent(classEvent);
+
+            //update website title with title from new page
             const titleEl = doc.getElementsByTagName("title");
             newTitle = titleEl[0].textContent;
             setTitle(newTitle); 
@@ -76,9 +84,17 @@ const loadNewPage = function(link){
             console.error("Error loading entry: ", error);
         });
     
-    //create a page object with the information we have
+    //make new Page object
     var newId = "page-" + (pages.length + 1);
     var page = new Page(newSection, pages.length + 1, newId, newTitle);
+
+    //update classes once loaded
+    newSection.addEventListener("classes loaded", updateClasses = (e) =>{
+        e.data.forEach((c)=>{
+            newSection.classList.add(c);
+        })
+        newSection.removeEventListener("classes loaded", updateClasses);
+    })
     return page
 };
 
@@ -134,7 +150,6 @@ const animatePages = (action, page) => {
         });
 
     };
-
     document.styleSheets[0].cssRules = ruleSheet.cssRules;
 };
 
@@ -153,7 +168,6 @@ const onAnimEnd = function(e){
         
     };
     e.target.style.animation = "";
-    e.target.style.flex = "1";
     e.target.removeEventListener("animationend", onAnimEnd);
 };
 
